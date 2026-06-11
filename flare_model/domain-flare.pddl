@@ -1,0 +1,729 @@
+(define (domain flare-domain)
+
+(:requirements :strips :typing)
+
+(:types 
+    node
+)
+(:predicates
+    
+    (has-compromised-customer-pc)
+    (has-compromised-engineering-workstations)
+    (has-connected ?at - node ?to - node)
+    (plc-offline ?node - node)
+    (plc-compromised ?node - node)
+
+    
+    (has-access-to-windows-server ?node - node)
+    (has-vulnerability-CVE-2019-0575 ?node - node)
+    (has-vulnerability-CVE-2019-0584 ?node - node)
+    (has-vulnerability-CVE-2018-0538 ?node - node)
+    (has-done-remote-code-execution ?node - node)
+    (has-improper-vpn-firewall-configuration ?node - node)
+    (has-access-to-network ?node - node)
+    
+    (has-vulnerability-CVE-2017-9312 ?node - node)
+    (has-exploit-improperly-implemented-fields-in-stack ?node - node)
+    (has-access-to-plc-port-1132-tcp ?node - node)
+    (has-done-denial-of-service-in-PLC1 ?node - node)
+    (has-Allen-Bradley-L30ERMS-safety-devices-v30-and-earlier ?node - node)
+
+
+    (has-vulnerability-CVE-2018-10594 ?node - node)
+    (has-exploit-fixed-length-stack-buffer ?node - node)
+    (has-access-to-plc-port-22-tcp ?node - node)
+    (has-remote-code-execution-PLC2 ?node - node)
+    (has-done-denial-of-service-in-PLC2 ?node - node)
+    (has-Delta-Industrial-Automation-COMMGR-versions-1-08-and-prior ?node - node)
+    
+    (has-Allen-Bradley-Micrologix-1400-Series-B-FRN-21-2-and-before ?node - node)
+    (has-vulnerability-CVE-2017-12089 ?node - node)
+    (has-access-to-plc-port-67-udp ?node - node)
+    (has-done-denial-of-service-in-PLC3 ?node - node)
+    (has-specially-crafted-unauthenticated-packets ?node - node)
+    
+    (has-vulnerability-CVE-2018-13810 ?node - node)
+    (has-access-to-plc-port-8080-http ?node - node)
+    (has-config-CP-v1604-CP-v1616 ?node - node)
+    (has-sent-malicious-link ?node - node)
+    (has-trigger-actions-via-the-web-interface ?node - node)
+    (has-done-denial-of-service-in-PLC4 ?node - node)
+    
+    (has-sent-crafted-PROFINET-DCP-broadcast-packets ?node - node)
+    (has-access-to-plc-port-161-udp ?node - node)
+    (has-vulnerability-CVE-2017-12741 ?node - node)
+    (has-medium-voltage-SINAMICS ?node - node)
+    
+    (has-done-denial-of-service-in-PLC5 ?node - node)
+    (has-vulnerability-CVE-2016-8673 ?node - node)
+    (has-access-to-plc-port-80-or-443-tcp ?node - node)
+    (has-SIMATIC-CP-343-1-Advanced-V-3-0-53-or-less-SIMATIC-CP-443-1-Advanced-V3-2-17-or-less-SIMATIC-S7-300-and-400-PN-DP-CPU ?node - node)
+    (has-perform-improper-authorozation ?node - node)
+    (has-sent-malicious-request ?node - node)
+    
+    (has-Modicon-Quantum-all-firmware-versions ?node - node)
+    (has-vulnerability-CVE-2019-6815 ?node - node)
+    (has-improper-access-control-in-modicon-quantum ?node - node)
+    (has-access-to-plc-port-44818-tcp ?node - node)
+    (has-done-unauthorized-modification-in-PLC-6 ?node - node)
+    
+    (has-vulnerability-CVE-2017-9638 ?node - node)
+    (has-access-to-plc-port-162-udp ?node - node)
+    (has-Mitsubishi-E-Designer-Version-7-52-Build-344 ?node - node)
+    (has-overwrite-the-stack ?node - node)
+    (has-arbitrary-code-execution-in-PLC7 ?node - node)
+    
+    (has-vulnerability-CVE-2017-6034 ?node - node)
+    (has-access-to-plc-port-502-tcp ?node - node)
+    (has-Modicon-M221-firmware-versions-prior-to-Version-1-5-0-0 ?node - node)
+    (has-Predictable-Value-Range-from-Previous-Values-issue ?node - node)
+    (has-generate-insufficiently-random-TCP-initial-sequence ?node - node)
+    (has-authentication-bypass ?node - node)
+    (has-unauthorized-access-to-PLC8 ?node - node)
+    
+    (has-vulnerability-CVE-2017-6032 ?node - node)
+    (has-Schneider-Electric-Modicon-Modbus-Protocol-design-violation ?node - node)
+    (has-session-related-weakness-in-Modicon-Modbus-Protocol ?node - node)
+    (has-susceptiblity-to-brute-force-attacks ?node - node)
+
+    (has-fault-mechanical-failure-due-to-compromised ?node - node)
+    (has-fault-instrumental-failure-due-to-compromised ?node - node)
+    (has-fault-pcv-faulty-due-to-compromised ?node - node)
+    (has-fault-valve-blocked-close-due-to-compromised ?node - node)
+    (has-fault-opertor-fault-due-to-compromised ?node - node)
+    (has-fault-manual-isolation-valve-close-due-to-compromised ?node - node)
+    (has-fault-fg-interrupted-at-source-due-to-compromised ?node - node)
+    (has-fault-isolation-of-fg-line-for-works-due-to-compromised ?node - node)
+    (has-fault-no-flow-of-fuel-gas-due-to-compromised ?node - node)
+    (has-fault-failure-on-ignition-system-due-to-compromised ?node - node)
+    (has-fault-ignition-pipe-clogged-due-to-compromised ?node - node)
+    (has-fault-defect-on-ignition-system-due-to-compromised ?node - node)
+    (has-fault-pilot-low-supply-pressure-due-to-compromised ?node - node)
+    (has-fault-nitrogen-valve-open-due-to-compromised ?node - node)
+    (has-fault-condensate-presence-in-fg-due-to-compromised ?node - node)
+    (has-fault-pipe-not-drained)
+    (has-fault-pilot-supply-pipe-isolated-due-to-compromised ?node - node)
+    (has-fault-relief-pcv-closed-to-compromised ?node - node)
+    (has-fault-switching-to-another-flare-due-to-compromised ?node - node)
+    (has-fault-low-flow-gas-flaring-due-to-compromised ?node - node)
+    (has-fault-pumping-phenomenon-due-to-compromised ?node - node)
+    (has-fault-windspeed-greater-than-120-km-per-hr-due-to-compromised ?node - node)
+    (has-fault-flame-detachment-due-to-compromised ?node - node)
+    (has-fault-pilot-extinction-due-to-compromised ?node - node)
+    (has-fault-flare-flameout)
+    
+
+)
+
+(:action access-to-windows-server
+    :parameters (?at - node)
+    :precondition (and     (has-compromised-customer-pc)
+                           (has-compromised-engineering-workstations)
+                           )
+    :effect (and
+                (has-access-to-windows-server ?at)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2018-0296
+    :parameters (?at ?to - node)
+    :precondition (and     (has-improper-vpn-firewall-configuration ?at)
+                           (has-connected ?at ?to)
+                           )
+    :effect (and
+                (has-access-to-network ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2019-0575
+    :parameters (?at ?to - node)
+    :precondition (and     (has-access-to-windows-server ?at)
+                           (has-vulnerability-CVE-2019-0575 ?at)
+                           (has-done-remote-code-execution ?at)
+                           (has-connected ?at ?to)
+                           )
+    :effect (and
+                (has-access-to-network ?to)
+    )
+)
+(:action exploits-vulnerability-CVE-2019-0584
+    :parameters (?at ?to - node)
+    :precondition (and    
+                          (has-access-to-windows-server ?at)
+                          (has-vulnerability-CVE-2019-0584 ?at)
+                          (has-done-remote-code-execution ?at)
+                          (has-connected ?at ?to)
+                          )
+    :effect (and
+                 (has-access-to-network ?to)
+    )
+)
+(:action exploits-vulnerability-CVE-2018-0538
+    :parameters (?at ?to - node)
+    :precondition (and    
+                          (has-access-to-windows-server ?at)
+                          (has-vulnerability-CVE-2018-0538 ?at)
+                          (has-done-remote-code-execution ?at)
+                          (has-connected ?at ?to)
+                          )
+    :effect (and
+                 (has-access-to-network ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2017-9312
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2017-9312 ?to)
+                        )
+    :effect (and
+                 (has-done-denial-of-service-in-PLC1 ?to)
+                 (plc-offline ?to)
+                 (has-exploit-improperly-implemented-fields-in-stack ?to)
+                 (has-access-to-plc-port-1132-tcp ?to)
+                 (has-Allen-Bradley-L30ERMS-safety-devices-v30-and-earlier ?to)
+    )
+)   
+
+(:action exploits-vulnerability-CVE-2018-10594
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2018-10594 ?to)
+                        )
+    :effect (and
+                (has-exploit-fixed-length-stack-buffer ?to)
+                (has-access-to-plc-port-22-tcp ?to)
+                (has-remote-code-execution-PLC2 ?to)
+                (has-done-denial-of-service-in-PLC2 ?to)
+                (plc-offline ?to)
+                (has-Delta-Industrial-Automation-COMMGR-versions-1-08-and-prior ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2017-12089
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2017-12089 ?to)
+                        )
+    :effect (and
+                (has-Allen-Bradley-Micrologix-1400-Series-B-FRN-21-2-and-before ?to)
+                (has-access-to-plc-port-67-udp ?to)
+                (has-done-denial-of-service-in-PLC3 ?to)
+                (plc-offline ?to)
+                (has-specially-crafted-unauthenticated-packets ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2018-13810
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2018-13810 ?to)
+                        )
+    :effect (and
+                    
+                    (has-access-to-plc-port-8080-http ?to)
+                    (has-config-CP-v1604-CP-v1616 ?to)
+                    (has-sent-malicious-link ?to)
+                    (has-trigger-actions-via-the-web-interface ?to)
+                    (has-done-denial-of-service-in-PLC4 ?to)
+                    (plc-offline ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2017-12741
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2017-12741 ?to)
+                        )
+    :effect (and
+                    (has-sent-crafted-PROFINET-DCP-broadcast-packets ?to)
+                    (has-access-to-plc-port-161-udp ?to)
+                    (has-medium-voltage-SINAMICS ?to)
+                    (has-done-denial-of-service-in-PLC4 ?to)
+                    (plc-offline ?to)
+    )
+)
+
+(:action exploits-vulnerability-plc5-CVE-2017-12741
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2017-12741 ?to)
+                        )
+    :effect (and
+                    (has-sent-crafted-PROFINET-DCP-broadcast-packets ?to)
+                    (has-access-to-plc-port-161-udp ?to)
+                    (has-medium-voltage-SINAMICS ?to)
+                    (has-done-denial-of-service-in-PLC5 ?to)
+                    (plc-offline ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2016-8673
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2016-8673 ?to)
+                        )
+    :effect (and
+                    
+                    (has-access-to-plc-port-80-or-443-tcp ?to)
+                    (has-SIMATIC-CP-343-1-Advanced-V-3-0-53-or-less-SIMATIC-CP-443-1-Advanced-V3-2-17-or-less-SIMATIC-S7-300-and-400-PN-DP-CPU ?to)
+                    (has-perform-improper-authorozation ?to)
+                    (has-sent-malicious-request ?to)
+                    (has-done-denial-of-service-in-PLC5 ?to)
+                    (plc-offline ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2019-6815
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2019-6815 ?to)
+                        )
+    :effect (and
+                    (has-Modicon-Quantum-all-firmware-versions ?to)
+                    (has-improper-access-control-in-modicon-quantum ?to)
+                    (has-access-to-plc-port-44818-tcp ?to)
+                    (has-done-unauthorized-modification-in-PLC-6 ?to)
+                    (plc-compromised ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2017-9638
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2017-9638 ?to)
+                        )
+    :effect (and
+                    (has-access-to-plc-port-162-udp ?to)
+                    (has-Mitsubishi-E-Designer-Version-7-52-Build-344 ?to)
+                    (has-overwrite-the-stack ?to)
+                    (has-arbitrary-code-execution-in-PLC7 ?to)
+                    (plc-compromised ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2017-6034
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2017-6034 ?to)
+                        )
+    :effect (and
+                    (has-access-to-plc-port-502-tcp ?to)
+                    (has-Modicon-M221-firmware-versions-prior-to-Version-1-5-0-0 ?to)
+                    (has-Predictable-Value-Range-from-Previous-Values-issue ?to)
+                    (has-generate-insufficiently-random-TCP-initial-sequence ?to)
+                    (has-authentication-bypass ?to)
+                    (has-unauthorized-access-to-PLC8 ?to)
+                    (plc-compromised ?to)
+    )
+)
+
+(:action exploits-vulnerability-CVE-2017-6032
+    :parameters (?at ?to - node)
+    :precondition (and 
+                        (has-connected ?at ?to)
+                        (has-access-to-network ?at)
+                        (has-vulnerability-CVE-2017-6032 ?to)
+                        )
+    :effect (and
+                    (has-Schneider-Electric-Modicon-Modbus-Protocol-design-violation ?to)
+                    (has-session-related-weakness-in-Modicon-Modbus-Protocol ?to)
+                    (has-susceptiblity-to-brute-force-attacks ?to)
+                    (has-unauthorized-access-to-PLC8 ?to)
+                    (has-access-to-plc-port-502-tcp ?to)
+                    (plc-compromised ?to)
+    )
+)
+
+(:action causes-fault-mechanical-failure-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-vulnerability-CVE-2017-6032 ?to)
+                    (has-Schneider-Electric-Modicon-Modbus-Protocol-design-violation ?to)
+                    (has-session-related-weakness-in-Modicon-Modbus-Protocol ?to)
+                    (has-susceptiblity-to-brute-force-attacks ?to)
+                    (has-unauthorized-access-to-PLC8 ?to)
+                    (has-access-to-plc-port-502-tcp ?to)
+                    (plc-compromised ?to)
+    
+    )
+    :effect (and
+                (has-fault-mechanical-failure-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-instrumental-failure-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-vulnerability-CVE-2017-6032 ?to)
+                    (has-Schneider-Electric-Modicon-Modbus-Protocol-design-violation ?to)
+                    (has-session-related-weakness-in-Modicon-Modbus-Protocol ?to)
+                    (has-susceptiblity-to-brute-force-attacks ?to)
+                    (has-unauthorized-access-to-PLC8 ?to)
+                    (has-access-to-plc-port-502-tcp ?to)
+                    (plc-compromised ?to)
+    
+    )
+    :effect (and
+                (has-fault-instrumental-failure-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-pcv-faulty-due-to-instrumental-failure
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-instrumental-failure-due-to-compromised ?to)
+    )
+    :effect (and
+                (has-fault-pcv-faulty-due-to-compromised ?to)
+    )
+)
+(:action causes-fault-pcv-faulty-due-to-mechanical-failure
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-mechanical-failure-due-to-compromised ?to)
+    )
+    :effect (and
+                (has-fault-pcv-faulty-due-to-compromised ?to)
+    )
+)
+
+
+(:action causes-fault-valve-blocked-close-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                 (has-done-denial-of-service-in-PLC1 ?to)
+                 (plc-offline ?to)
+                 (has-exploit-improperly-implemented-fields-in-stack ?to)
+                 (has-access-to-plc-port-1132-tcp ?to)
+                 (has-Allen-Bradley-L30ERMS-safety-devices-v30-and-earlier ?to)
+    )
+    :effect (and
+                (has-fault-valve-blocked-close-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-manual-isolation-valve-close-due-to-valve-blocked-close
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-valve-blocked-close-due-to-compromised ?to)
+    )
+    :effect (and
+                (has-fault-manual-isolation-valve-close-due-to-compromised ?to)
+    )
+)
+ ; (has-fault-opertor-fault-due-to-compromised ?node - node)
+
+(:action causes-fault-fg-interrupted-at-source-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                (has-exploit-fixed-length-stack-buffer ?to)
+                (has-access-to-plc-port-22-tcp ?to)
+                (has-remote-code-execution-PLC2 ?to)
+                (has-done-denial-of-service-in-PLC2 ?to)
+                (plc-offline ?to)
+                (has-Delta-Industrial-Automation-COMMGR-versions-1-08-and-prior ?to)
+    )
+    :effect (and
+                (has-fault-fg-interrupted-at-source-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-isolation-of-fg-line-for-works-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                (has-exploit-fixed-length-stack-buffer ?to)
+                (has-access-to-plc-port-22-tcp ?to)
+                (has-remote-code-execution-PLC2 ?to)
+                (has-done-denial-of-service-in-PLC2 ?to)
+                (plc-offline ?to)
+                (has-Delta-Industrial-Automation-COMMGR-versions-1-08-and-prior ?to)
+    )
+    :effect (and
+                (has-fault-isolation-of-fg-line-for-works-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-no-flow-of-fuel-gas-due-to-fg-interrupted-at-source
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-fg-interrupted-at-source-due-to-compromised ?to)
+    )
+    :effect (and
+                (has-fault-no-flow-of-fuel-gas-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-no-flow-of-fuel-gas-due-to-isolation-of-fg-line-for-work
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-isolation-of-fg-line-for-works-due-to-compromised ?to)
+    )
+    :effect (and
+                (has-fault-no-flow-of-fuel-gas-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-failure-on-ignition-system-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-done-denial-of-service-in-PLC4 ?to)
+                    (plc-offline ?to)
+    )
+    :effect (and
+                (has-fault-failure-on-ignition-system-due-to-compromised ?to)
+    )
+)
+; (has-fault-ignition-pipe-clogged-due-to-compromised ?node - node)    
+
+(:action causes-fault-defect-on-ignition-system-due-to-failure-on-ignition-system
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-failure-on-ignition-system-due-to-compromised ?to)
+    )
+    :effect (and
+                (has-fault-defect-on-ignition-system-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-pilot-low-supply-pressure-due-to-pressure-to-pcv-faulty
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-pcv-faulty-due-to-compromised ?to)
+    )
+    :effect (and
+               (has-fault-pilot-low-supply-pressure-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-pilot-low-supply-pressure-due-to-manual-isolation-valve-close
+    :parameters (?to - node)
+    :precondition (and 
+                   (has-fault-manual-isolation-valve-close-due-to-compromised ?to)
+    )
+    :effect (and
+               (has-fault-pilot-low-supply-pressure-due-to-compromised ?to)
+    )
+)
+(:action causes-fault-pilot-low-supply-pressure-due-to-no-flow-of-fuel-gas
+    :parameters (?to - node)
+    :precondition (and 
+                   (has-fault-no-flow-of-fuel-gas-due-to-compromised ?to)
+    )
+    :effect (and
+               (has-fault-pilot-low-supply-pressure-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-nitrogen-valve-open-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-done-denial-of-service-in-PLC5 ?to)
+                    (plc-offline ?to)
+    )
+    :effect (and
+                (has-fault-nitrogen-valve-open-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-condensate-presence-in-fg-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-access-to-plc-port-162-udp ?to)
+                    (has-Mitsubishi-E-Designer-Version-7-52-Build-344 ?to)
+                    (has-overwrite-the-stack ?to)
+                    (has-arbitrary-code-execution-in-PLC7 ?to)
+                    (plc-compromised ?to)
+    )
+    :effect (and
+                (has-fault-condensate-presence-in-fg-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-pilot-supply-pipe-isolated-due-to-condensate-presence-in-fg
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-condensate-presence-in-fg-due-to-compromised ?to)
+                    (has-fault-pipe-not-drained)
+    )
+    :effect (and
+               (has-fault-pilot-supply-pipe-isolated-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-pilot-extinction-due-to-defect-on-ignition-system
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-defect-on-ignition-system-due-to-compromised ?to)
+    )
+    :effect (and
+               (has-fault-pilot-extinction-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-pilot-extinction-due-to-pilot-low-supply-pressure
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-pilot-low-supply-pressure-due-to-compromised ?to)
+    )
+    :effect (and
+               (has-fault-pilot-extinction-due-to-compromised ?to)
+    )
+)
+(:action causes-fault-pilot-extinction-due-to-nitrogen-valve-open
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-nitrogen-valve-open-due-to-compromised ?to)
+    )
+    :effect (and
+               (has-fault-pilot-extinction-due-to-compromised ?to)
+    )
+)
+(:action causes-fault-pilot-extinction-due-to-pilot-supply-pipe-isolated
+    :parameters (?to - node)
+    :precondition (and 
+                     (has-fault-pilot-supply-pipe-isolated-due-to-compromised ?to)
+    )
+    :effect (and
+              
+               (has-fault-pilot-extinction-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-relief-pcv-closed-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                (has-Allen-Bradley-Micrologix-1400-Series-B-FRN-21-2-and-before ?to)
+                (has-vulnerability-CVE-2017-12089 ?to)
+                (has-access-to-plc-port-67-udp ?to)
+                (has-done-denial-of-service-in-PLC3 ?to)
+                (plc-offline ?to)
+                (has-specially-crafted-unauthenticated-packets ?to)
+    )
+    :effect (and
+                (has-fault-relief-pcv-closed-to-compromised ?to)
+    )
+)
+(:action causes-fault-switching-to-another-flare-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                (has-Allen-Bradley-Micrologix-1400-Series-B-FRN-21-2-and-before ?to)
+                ;(has-vulnerability-CVE-2017-12089 ?to)
+                (has-access-to-plc-port-67-udp ?to)
+                (has-done-denial-of-service-in-PLC3 ?to)
+                (plc-offline ?to)
+                (has-specially-crafted-unauthenticated-packets ?to)
+    )
+    :effect (and
+                (has-fault-switching-to-another-flare-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-low-flow-gas-flaring-due-to-relief-pcv-closed
+    :parameters (?to - node)
+    :precondition (and 
+                     (has-fault-relief-pcv-closed-to-compromised ?to)
+    )
+    :effect (and
+              (has-fault-low-flow-gas-flaring-due-to-compromised ?to)
+    )
+)
+(:action causes-fault-low-flow-gas-flaring-due-to-switching-to-another-flare
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-switching-to-another-flare-due-to-compromised ?to)
+    )
+    :effect (and
+              (has-fault-low-flow-gas-flaring-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-pumping-phenomenon-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-Modicon-Quantum-all-firmware-versions ?to)
+                    (has-improper-access-control-in-modicon-quantum ?to)
+                    (has-access-to-plc-port-44818-tcp ?to)
+                    (has-done-unauthorized-modification-in-PLC-6 ?to)
+                    (plc-compromised ?to)
+    )
+    :effect (and
+                (has-fault-pumping-phenomenon-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-windspeed-greater-than-120-km-per-hr-due-to
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-Modicon-Quantum-all-firmware-versions ?to)
+                    (has-improper-access-control-in-modicon-quantum ?to)
+                    (has-access-to-plc-port-44818-tcp ?to)
+                    (has-done-unauthorized-modification-in-PLC-6 ?to)
+                    (plc-compromised ?to)
+    )
+    :effect (and
+                (has-fault-windspeed-greater-than-120-km-per-hr-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-flame-detachment-due-to-low-flow-gas-flaring
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-low-flow-gas-flaring-due-to-compromised ?to)
+    )
+    :effect (and
+              (has-fault-flame-detachment-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-flame-detachment-due-to-pumping-phenomenon
+    :parameters (?to - node)
+    :precondition (and 
+                    (has-fault-pumping-phenomenon-due-to-compromised ?to)
+    )
+    :effect (and
+              (has-fault-flame-detachment-due-to-compromised ?to)
+    )
+)
+(:action causes-fault-flame-detachment-due-to-windspeed-greater-than-120-km-per-hr
+    :parameters (?to - node)
+    :precondition (and 
+                     (has-fault-windspeed-greater-than-120-km-per-hr-due-to-compromised ?to)
+    )
+    :effect (and
+              (has-fault-flame-detachment-due-to-compromised ?to)
+    )
+)
+
+(:action causes-fault-flare-flameout
+    :parameters (?node1 ?node2 - node)
+    :precondition (and 
+                      (has-fault-flame-detachment-due-to-compromised ?node1)
+                      (has-fault-pilot-extinction-due-to-compromised ?node2)
+    )
+    :effect (and
+              (has-fault-flare-flameout)
+    )
+)
+
+)
