@@ -14,7 +14,7 @@
 # SBATCH --error=n3_v15_f15.err  		# error file
 # SBATCH --mail-type=begin        	# send email when job begins
 # SBATCH --mail-type=end          	# send email when job ends
-# SBATCH --mail-user=shadaab@colostate.edu
+# SBATCH --mail-user=@colostate.edu
 #
 # Job specific section
 # -----------------------
